@@ -4,22 +4,25 @@ import { useEffect } from "react";
 import { addTrailerVideo } from "../utils/movieSlice";
 
 const MainContainer = () => {
-   const trailerVideo = useSelector(store => store.movies?.trailerVideo)
    const dispatch = useDispatch()
+   const trailerVideo = useSelector(store => store.movies?.trailerVideo)
    const movies = useSelector(store => store.movies?.nowPlayingMovies);
-   const getMovieVideos = async () => {
-      const data = await fetch('https://api.themoviedb.org/3/movie/1311031/videos?language=en-US', api_options)
+   const getMovieVideos = async (movieId) => {
+      const data = await fetch(`https://api.themoviedb.org/3/movie/${movieId}/videos?language=en-US`, api_options)
       const json = await data.json()
-      console.log(json)
       const trailer = json.results.filter(video => video.type == 'Trailer')[0];
       dispatch(addTrailerVideo(trailer))
-      console.log(trailer)
    }
    useEffect(() => {
-      getMovieVideos()
-   }, [])
+      if(movies && movies.length > 0){
+         if(!trailerVideo) {
+            console.log("hihihih")
+            getMovieVideos(movies[0].id)
+         }
+      }
+   }, [movies])
    if (!movies) return;
-   const mainMovie = movies[1];
+   const mainMovie = movies[0];
    const { original_title, overview, movieId } = mainMovie;
 
    return (
