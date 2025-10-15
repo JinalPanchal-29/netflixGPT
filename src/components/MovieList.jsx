@@ -9,7 +9,7 @@ const MovieList = ({ title, movies }) => {
          <div className="flex overflow-x-scroll no-scrollbar">
          <div className="flex gap-3">
             {
-               movies?.map(movie => <MovieCard key={movie.id} posterPath={movie.poster_path || movie.poster_path != undefined ? movie.poster_path: null} />) 
+               safeMovies?.map(movie => <MovieCard key={movie.id} posterPath={movie.poster_path != undefined ? movie.poster_path: null} />) 
             }
          </div>
       </div>
